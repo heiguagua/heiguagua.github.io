@@ -46,7 +46,7 @@ say('hello);
 ## 2、Babel  
 ### Babel产生的背景
 为了理解为什么会出现 Babel，就需要了解一下 javascript 的历史了。  
-javascript 是 web 语言，不同浏览器都会有不同的 javascript 解释器对其进行解释编译运行。由于 js 被广泛接受，随后又有 `ECMA (European Computer Manufacturers Association 欧洲计算机制造商协会)`对其进行规范管理，js 所遵循的规范也也叫 ECMAScript 或者 ES。  
+javascript 是 web 语言，不同浏览器都会有不同的 javascript 解释器对其进行解释编译运行。由于 js 被广泛接受，随后又有 `ECMA (European Computer Manufacturers Association 欧洲计算机制造商协会)`对其进行规范管理，js 所遵循的规范也叫 ECMAScript 或者 ES。  
 其中第5版也就是 `ES5` 于2009年定稿，目前主流浏览器都全部支持。  
 第6个版本ES2015 即 `ES6` ，在2015年定稿，目前主流浏览器并不是全部支持。  
 还有ES7、ES8 在原来的基础上，增加了一些新功能。  
@@ -54,6 +54,11 @@ javascript 是 web 语言，不同浏览器都会有不同的 javascript 解释�
 如果我们希望立刻就能使用 ES6/ES7/ESNext...，但同时我们也希望我们的代码能在主流浏览器或者node中正常运行，那这就是 Babel 产生的原因了。  
 
 简单来说，Babel就是把JavaScript 中 ES6/ES7/ESNext等新语法转换为ES5（也可以转换为更低的规范，但目前 ES5 规范已经足以覆盖绝大部分主流浏览器，因此可以认为转到 ES5 是一个安全且流行的做法），让低端运行环境如浏览器或者node能认识并执行的工具。  
+
+我们可以将babel理解为一个转译器 transpiler 而不是编译器 compiler 更准确，因为它只是把同种语言的高版本规则翻译成低版本规则，但是和编译器类似，它也分为3个阶段，**parsing**、 **transforming**、**generating**，以 ES6 转译为 ES5 为例，babel转译的具体过程如下：  
+> ES6 代码输入 => babylon 进行解析 => 得到 AST => plugin 用 babel-traverse 对 AST 进行遍历转译 => 得到新的AST => babel-generator 通过 AST 生成 ES5 代码
+
+
 
 ### Babel的使用方法  
 一共有以下三种方式：  
@@ -67,9 +72,10 @@ javascript 是 web 语言，不同浏览器都会有不同的 javascript 解释�
 2、命令行（cli），多见于 package.json 中的某条命令。  
 3、构建工具插件（webpack 的 babel-loader、rollup 的 rollup-plugin-babel）。
 
-### 运行方式  
+### 关键概念  
 **plugin**  
-Babel 本身不具备任何转化功能，它通过配置 `plugin` 来对不同的语法特性做转译。  
+Babel 本身不具备任何转化功能，它通过配置 `plugin` 来对不同的语法特性做转译，主要作用域第二个阶段 **transforming**。  
 **presets**  
 由于不同的语法特性特别多，那么对应的babel plugin也会特别多，如果选择手动添加并安装会非常繁琐且不方便管理，为了解决这个问题，babel 提供了一组插件集合 `presets`，避免了重复定义和安装。
-## 3、
+**polyfill**  
+polyfill JS 标准新增的原生对象和 API 的 shim，实现上仅仅是core-js和regenerator-runtime两个包的封装
